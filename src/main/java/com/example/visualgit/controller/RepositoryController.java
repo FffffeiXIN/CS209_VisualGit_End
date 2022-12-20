@@ -49,9 +49,14 @@ public class RepositoryController {
         return service.analyseCommitByDay(id);
     }
 
-    @GetMapping("analyseCommitByWeek")
-    public Result analyseCommitByWeek(String id){
-        return service.analyseCommitByWeek(id);
+    @GetMapping("analyseCommitByMonth")
+    public Result analyseCommitByMonth(String id){
+        return service.analyseCommitByMonth(id);
+    }
+
+    @GetMapping("analyseCommitByYear")
+    public Result analyseCommitByYear(String id){
+        return service.analyseCommitByYear(id);
     }
 
     @GetMapping("getAllRepo")

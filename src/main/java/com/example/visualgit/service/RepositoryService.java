@@ -238,17 +238,12 @@ public class RepositoryService {
 
         return Result.ok().code(200).data(map);
     }
-    public Result analyseCommitByWeek(String id){
-        //
-        List<Commit> commits = mapper.selectCommit(id);
-        return null;
-    }
-    public Result analyseCommitByHour(String id){
+    public Result analyseCommitByYear(String id){
         List<Commit> commits = mapper.selectCommit(id);
         Map<String,Object> map=new LinkedHashMap<>();
 
         for(Commit commit:commits){
-            String date = MathUtils.dealDate(commit.getCommit_time()).substring(8,10);
+            String date = MathUtils.dealDate(commit.getCommit_time()).substring(0,4);
             if(map.containsKey(date)){
                 map.put(date,(int)map.get(date)+1);
             }else {
@@ -263,6 +258,56 @@ public class RepositoryService {
         }
 
         return Result.ok().code(200).data(map);
+    }
+
+    public Result analyseCommitByMonth(String id){
+        List<Commit> commits = mapper.selectCommit(id);
+        Map<String,Object> map=new LinkedHashMap<>();
+
+        for(Commit commit:commits){
+            String date = MathUtils.dealDate(commit.getCommit_time()).substring(0,6);
+            if(map.containsKey(date)){
+                map.put(date,(int)map.get(date)+1);
+            }else {
+                map.put(date,1);
+            }
+        }
+        List<Map.Entry<String,Object>> list=new LinkedList<>(map.entrySet());
+        list.sort(Comparator.comparingInt(o -> Integer.parseInt(o.getKey())));
+        map=new LinkedHashMap<>();
+        for(Map.Entry<String,Object> entry:list){
+            map.put(entry.getKey(),entry.getValue());
+        }
+
+        return Result.ok().code(200).data(map);
+    }
+    public Result analyseCommitByHour(String id){
+        List<Commit> commits = mapper.selectCommit(id);
+        Map<String,Object> map=new LinkedHashMap<>();
+        List<String> month = new ArrayList<>();
+        List<Object> number = new ArrayList<>();
+
+        for(Commit commit:commits){
+            String date = MathUtils.dealDate(commit.getCommit_time()).substring(8,10);
+            if(map.containsKey(date)){
+                map.put(date,(int)map.get(date)+1);
+            }else {
+                map.put(date,1);
+            }
+        }
+        List<Map.Entry<String,Object>> list=new LinkedList<>(map.entrySet());
+        list.sort(Comparator.comparingInt(o -> Integer.parseInt(o.getKey())));
+//        map=new LinkedHashMap<>();
+        for(Map.Entry<String,Object> entry:list){
+//            map.put(entry.getKey(),entry.getValue());
+            month.add(entry.getKey());
+            number.add(entry.getValue());
+        }
+        Map<String,Object> res = new LinkedHashMap<>();
+        res.put("month",month);
+        res.put("number",number);
+
+        return Result.ok().code(200).data(res);
     }
 
     public Result getAllRepo(){
