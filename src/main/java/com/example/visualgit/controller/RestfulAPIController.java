@@ -30,7 +30,7 @@ public class RestfulAPIController {
 //        System.out.println(id);
         HashMap<String,List<Issue>> res = new LinkedHashMap<>();
         List<Issue> open = service.getRestIssues("open",id);
-        List<Issue> close = service.getRestIssues("close",id);
+        List<Issue> close = service.getRestIssues("closed",id);
         res.put("open issues",open);
         res.put("close issues",close);
         return res;

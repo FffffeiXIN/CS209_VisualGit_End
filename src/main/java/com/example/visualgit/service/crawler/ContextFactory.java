@@ -9,7 +9,4 @@ public class ContextFactory {
         if(url.contains("releases")) return new ContextService(new ReleaseCrawlerServiceImpl());
         return null;
     }
-
-
-
 }
